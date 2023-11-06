@@ -38,29 +38,92 @@ class LinkedList {
     return count;
   }
 
-  head() {
+  getHead() {
     //returns the first node of the list
-    this;
+    return this.head.value;
   }
 
   tail() {
     //returns the last node of the list
+    let currentPointer = this.head;
+    let tailNode;
+
+    while (currentPointer) {
+      tailNode = currentPointer;
+      currentPointer = currentPointer.nextNode;
+    }
+
+    return tailNode.value;
   }
 
   atIndex(index) {
     //returns the node at the given index
+    let currentPointer = this.head;
+    let output,
+      count = 0;
+
+    if (index < 0) {
+      return "Error! Index cannot be less than zero";
+    }
+
+    if (index === 0) {
+      output = this.head;
+    } else if (index > this.size() - 1) {
+      return "Error! Index is greater than list's size";
+    } else {
+      while (count < index) {
+        currentPointer = currentPointer.nextNode;
+        count++;
+        output = currentPointer;
+      }
+    }
+
+    return `At index: ${index}` + `, the value is ${output.value}`;
   }
 
   pop() {
     //removes the last element from the list
+    if (!this.head) {
+      return "No nodes to remove";
+    }
+    let currentPointer = this.head;
+    while (currentPointer.nextNode.nextNode) {
+      currentPointer = currentPointer.nextNode;
+    }
+    currentPointer.nextNode = null;
+    return "Removed the last node";
   }
 
   contains(value) {
     //returns true if the passed value is in the list otherwise return false
+    let currentPointer = this.head;
+    let wasFound;
+    for (let i = 0; i < this.size(); i++) {
+      if (currentPointer.value === value) {
+        wasFound = true;
+        break;
+      } else {
+        currentPointer = currentPointer.nextNode;
+        wasFound = false;
+      }
+    }
+    return { value, wasFound };
   }
 
   find(value) {
     //returns the index of the node containing value or null if not found
+    let currentPointer = this.head;
+    let index;
+    for (let i = 0; i < this.size(); i++) {
+      if (currentPointer.value === value) {
+        index = i;
+        break;
+      } else {
+        currentPointer = currentPointer.nextNode;
+        index = null;
+      }
+    }
+    return { value, index };
   }
 
   toString() {
@@ -107,6 +170,19 @@ class LinkedList {
 
   removeAt(index) {
     //removes the node at the given index
+    if (index < 0) return "Index cannot be less than zero";
+    else if (index > this.size()) return "Index does not exist in the list yet";
+    else if (index === 0) return (this.head = this.head.nextNode);
+
+    let currentPointer = this.head;
+    for (let i = 0; i < index - 1; i++) {
+      currentPointer = currentPointer.nextNode;
+    }
+
+    if (currentPointer.nextNode) {
+      currentPointer.nextNode = currentPointer.nextNode.nextNode;
+    }
+    return `Removed a node at index: ${index}`;
   }
 }
 
@@ -119,7 +195,16 @@ class Node {
 
 const list1 = new LinkedList();
 list1.append(100);
-list1.prepend(200);
-list1.insertAt(300, 1);
+list1.prepend(300);
+list1.insertAt(200, 1);
+list1.insertAt(20, 0);
+list1.prepend(400);
+// console.log(list1.pop());
+// console.log(list1.removeAt(0));
 list1.toString();
 console.log("Size of the node is:", list1.size());
+console.log("Head:", list1.getHead());
+console.log("Tail:", list1.tail());
+console.log(list1.atIndex(3));
+console.log(list1.contains(400));
+console.log(list1.find(400));

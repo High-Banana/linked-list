@@ -1,8 +1,8 @@
 Linked Lists project practice.
 
-Test through terminal or CLI.
+Applied TDD using jest.
 
-The functions are:
+Linked List methods:
 
 - `append(value)` - adds a new node containing value to the end of the list
 - `prepend(value)` - adds a new node containing value to the start of the list
